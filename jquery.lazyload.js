@@ -50,21 +50,22 @@
 
 		var x_visible = offset.left + $el.width() >= 0 && offset.left <= container_width;
 		var y_visible = offset.top + $el.height() >= 0 && offset.top <= container_height;
-		
+
 		return x_visible && y_visible;
 	};
 
 	/**
-	 * Loads an individual image and triggers the 
+	 * Loads an individual image and triggers the
 	 * appropriate callback upon completion.
 	 *
 	 * @param {object} job
 	 */
 	var load = function(job) {
-		var onLoad = function() { job.success.apply(job.$el, [job.src]); };
-		var onError = function() { job.error.apply(job.$el, [job.src]); };
 		var image = new Image();
-		
+		var start = (new Date()).getTime();
+		var onLoad = function() { job.success.apply(job.$el, [job.src, (new Date()).getTime() - start]); };
+		var onError = function() { job.error.apply(job.$el, [job.src, (new Date()).getTime() - start]); };
+
 		image.src = job.src;
 		if (image.width) {
 			onLoad();
